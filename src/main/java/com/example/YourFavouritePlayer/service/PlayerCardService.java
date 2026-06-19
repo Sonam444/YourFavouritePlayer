@@ -32,6 +32,11 @@ public class PlayerCardService {
 				.orElseThrow(() -> new IllegalArgumentException("Player card not found"));
 	}
 
+	public PlayerCard getPlayerWithDetails(Long id) {
+		return playerCardRepository.findByIdWithDetails(id)
+				.orElseThrow(() -> new IllegalArgumentException("Player card not found"));
+	}
+
 	public void checkCanManage(Long id, AppUser currentUser) {
 		checkOwner(getPlayer(id), currentUser);
 	}
