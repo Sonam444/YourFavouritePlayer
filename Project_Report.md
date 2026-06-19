@@ -5,11 +5,11 @@
 
 ## Team Members
 
-| No. | Name |
-| --- | --- |
-| 1 | TAMANG SONAM |
-| 2 | TAMANG RUPESH |
-| 3 | SHRESTHA CHIRANJIBI |
+| No. | Name | Student ID |
+| --- | --- | --- |
+| 1 | TAMANG SONAM | 2312129 |
+| 2 | TAMANG RUPESH | 2312128 |
+| 3 | SHRESTHA CHIRANJIBI | 
 
 **Live deployment:** https://yourfavouriteplayer-production-6701.up.railway.app/players
 
