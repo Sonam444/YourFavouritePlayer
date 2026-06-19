@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Sign Up')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: nav}"></nav>
+
+<main class="page-shell narrow-shell">
+	<section class="form-panel">
+		<p class="eyebrow">Join the vote</p>
+		<h1>Sign Up</h1>
+		<div class="alert" th:if="${#fields.hasGlobalErrors()}" th:each="error : ${#fields.globalErrors()}" th:text="${error}">Signup error</div>
+		<form th:action="@{/signup}" method="post" th:object="${signupForm}" class="stacked-form">
+			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+			<div class="field">
+				<label for="username">Username</label>
+				<input id="username" type="text" th:field="*{username}" autocomplete="username">
+				<p class="field-error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username error</p>
+			</div>
+			<div class="field">
+				<label for="email">Email</label>
+				<input id="email" type="email" th:field="*{email}" autocomplete="email">
+				<p class="field-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email error</p>
+			</div>
+			<div class="field">
+				<label for="password">Password</label>
+				<input id="password" type="password" th:field="*{password}" autocomplete="new-password">
+				<p class="field-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password error</p>
+			</div>
+			<div class="field">
+				<label for="confirmPassword">Confirm Password</label>
+				<input id="confirmPassword" type="password" th:field="*{confirmPassword}" autocomplete="new-password">
+				<p class="field-error" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}">Confirm password error</p>
+			</div>
+			<div class="form-actions">
+				<a class="button button-ghost" th:href="@{/login}">Login</a>
+				<button class="button button-primary" type="submit">Create Account</button>
+			</div>
+		</form>
+	</section>
+</main>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(${player.name})}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: nav}"></nav>
+
+<main class="page-shell detail-grid">
+	<section class="detail-media">
+		<img th:if="${player.imagePath != null}" th:src="@{${player.imagePath}}" th:alt="${player.name}">
+		<div th:unless="${player.imagePath != null}" class="photo-placeholder"></div>
+	</section>
+
+	<section class="detail-panel">
+		<p class="eyebrow">Player card</p>
+		<h1 th:text="${player.name}">Player name</h1>
+		<div class="detail-tags">
+			<span th:text="${player.club}">Club</span>
+			<span th:text="${player.position}">Position</span>
+			<span th:text="${player.country}">Country</span>
+		</div>
+		<p class="description" th:if="${player.description}" th:text="${player.description}">Description</p>
+		<div class="score-row">
+			<div class="score-block">
+				<strong th:text="${player.voteCount}">0</strong>
+				<span>votes</span>
+			</div>
+			<form th:if="${loggedIn}" th:action="@{/players/{id}/vote(id=${player.id})}" method="post" class="inline-form">
+				<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+				<input type="hidden" name="returnUrl" th:value="@{/players/{id}(id=${player.id})}">
+				<button class="button button-primary" type="submit" th:text="${votedPlayerIds.contains(player.id) ? 'Remove Vote' : 'Vote'}">Vote</button>
+			</form>
+			<a th:unless="${loggedIn}" class="button button-primary" th:href="@{/login}">Login To Vote</a>
+		</div>
+		<div class="owner-actions" th:if="${loggedIn and player.creator.username == currentUsername}">
+			<a class="button button-ghost" th:href="@{/players/{id}/edit(id=${player.id})}">Edit</a>
+			<form th:action="@{/players/{id}/delete(id=${player.id})}" method="post" class="inline-form">
+				<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+				<button class="button button-danger" type="submit">Delete</button>
+			</form>
+		</div>
+	</section>
+
+	<section class="comments-panel">
+		<div class="section-heading">
+			<h2>Comments</h2>
+			<span th:text="${#lists.size(comments)}">0</span>
+		</div>
+
+		<form th:if="${loggedIn}" class="comment-form" th:action="@{/players/{id}/comments(id=${player.id})}" method="post" th:object="${commentForm}">
+			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+			<label for="content">Comment</label>
+			<textarea id="content" th:field="*{content}" rows="3" placeholder="Share your football take"></textarea>
+			<p class="field-error" th:if="${#fields.hasErrors('content')}" th:errors="*{content}">Comment error</p>
+			<button class="button button-primary" type="submit">Post Comment</button>
+		</form>
+		<a th:unless="${loggedIn}" class="button button-primary" th:href="@{/login}">Login To Comment</a>
+
+		<div class="comment-list">
+			<article class="comment-item" th:each="comment : ${comments}">
+				<div>
+					<strong th:text="${comment.user.username}">username</strong>
+					<p th:text="${comment.content}">Comment text</p>
+				</div>
+				<form th:if="${loggedIn and (comment.user.username == currentUsername or player.creator.username == currentUsername)}"
+					  th:action="@{/comments/{id}/delete(id=${comment.id})}" method="post" class="inline-form">
+					<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+					<input type="hidden" name="playerId" th:value="${player.id}">
+					<button class="text-button" type="submit">Delete</button>
+				</form>
+			</article>
+		</div>
+	</section>
+</main>
+</body>
+</html>

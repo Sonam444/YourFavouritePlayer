@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: your-favourite-player
+    env: java
+    buildCommand: ./gradlew clean bootJar
+    startCommand: java -jar build/libs/*.jar
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        sync: false
+      - key: SPRING_DATASOURCE_USERNAME
+        sync: false
+      - key: SPRING_DATASOURCE_PASSWORD
+        sync: false
+      - key: UPLOAD_DIR
+        value: uploads

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(${formTitle})}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: nav}"></nav>
+
+<main class="page-shell narrow-shell">
+	<section class="form-panel">
+		<p class="eyebrow">Player card</p>
+		<h1 th:text="${formTitle}">Create Player Card</h1>
+		<form th:action="${formAction}" method="post" enctype="multipart/form-data" th:object="${playerForm}" class="stacked-form">
+			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+
+			<div class="field">
+				<label for="name">Player Name</label>
+				<input id="name" type="text" th:field="*{name}" placeholder="Cristiano Ronaldo">
+				<p class="field-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name error</p>
+			</div>
+
+			<div class="field-grid">
+				<div class="field">
+					<label for="club">Club</label>
+					<input id="club" type="text" th:field="*{club}" placeholder="Al Nassr">
+					<p class="field-error" th:if="${#fields.hasErrors('club')}" th:errors="*{club}">Club error</p>
+				</div>
+				<div class="field">
+					<label for="position">Position</label>
+					<input id="position" type="text" th:field="*{position}" placeholder="Forward">
+					<p class="field-error" th:if="${#fields.hasErrors('position')}" th:errors="*{position}">Position error</p>
+				</div>
+			</div>
+
+			<div class="field">
+				<label for="country">Country</label>
+				<input id="country" type="text" th:field="*{country}" placeholder="Portugal">
+				<p class="field-error" th:if="${#fields.hasErrors('country')}" th:errors="*{country}">Country error</p>
+			</div>
+
+			<div class="field">
+				<label for="description">Description</label>
+				<textarea id="description" th:field="*{description}" rows="5" placeholder="Finishing, leadership, best moment"></textarea>
+				<p class="field-error" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Description error</p>
+			</div>
+
+			<div class="field">
+				<label for="image">Photo</label>
+				<input id="image" type="file" th:field="*{image}" accept="image/*">
+				<p class="field-error" th:if="${#fields.hasErrors('image')}" th:errors="*{image}">Image error</p>
+			</div>
+
+			<div class="form-actions">
+				<a class="button button-ghost" th:href="@{/players}">Cancel</a>
+				<button class="button button-primary" type="submit" th:text="${submitLabel}">Save</button>
+			</div>
+		</form>
+	</section>
+</main>
+</body>
+</html>

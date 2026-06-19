@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Ranking')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: nav}"></nav>
+
+<main class="page-shell">
+	<section class="toolbar">
+		<div>
+			<p class="eyebrow">Football card ranking</p>
+			<h1>Vote the best player to the top.</h1>
+		</div>
+		<form class="search-form" th:action="@{/players}" method="get">
+			<label for="keyword">Search</label>
+			<div class="search-row">
+				<input id="keyword" type="search" name="keyword" th:value="${keyword}" placeholder="Name, club, country, position">
+				<button class="button button-primary" type="submit">Search</button>
+			</div>
+		</form>
+	</section>
+
+	<div th:if="${successMessage}" class="notice" th:text="${successMessage}">Saved</div>
+	<div th:if="${param.logout}" class="notice">You are logged out.</div>
+
+	<section class="winner-line" th:if="${!#lists.isEmpty(players)}">
+		<div class="winner-media">
+			<img th:if="${players[0].imagePath != null}" th:src="@{${players[0].imagePath}}" th:alt="${players[0].name}">
+			<div th:unless="${players[0].imagePath != null}" class="photo-placeholder"></div>
+		</div>
+		<div class="winner-copy">
+			<p class="eyebrow">Winner</p>
+			<h2 th:text="${players[0].name}">Player name</h2>
+			<p th:text="${players[0].club + ' - ' + players[0].position + ' - ' + players[0].country}">Club - Position - Country</p>
+		</div>
+		<div class="score-block">
+			<strong th:text="${players[0].voteCount}">0</strong>
+			<span>votes</span>
+		</div>
+	</section>
+
+	<section class="empty-state" th:if="${#lists.isEmpty(players)}">
+		<h2>No player cards yet.</h2>
+		<a th:if="${loggedIn}" class="button button-primary" th:href="@{/players/new}">Create First Card</a>
+		<a th:unless="${loggedIn}" class="button button-primary" th:href="@{/signup}">Sign Up</a>
+	</section>
+
+	<section class="player-strip" th:if="${!#lists.isEmpty(players)}" aria-label="Ranked players">
+		<article class="player-card" th:each="player, iter : ${players}" th:classappend="${iter.index == 0} ? ' winner-card' : ''">
+			<div class="card-rank" th:text="${iter.index == 0 ? 'Winner' : '#' + (iter.index + 1)}">#1</div>
+			<a class="card-photo" th:href="@{/players/{id}(id=${player.id})}">
+				<img th:if="${player.imagePath != null}" th:src="@{${player.imagePath}}" th:alt="${player.name}">
+				<div th:unless="${player.imagePath != null}" class="photo-placeholder"></div>
+			</a>
+			<div class="card-body">
+				<h2 th:text="${player.name}">Player</h2>
+				<p th:text="${player.club + ' - ' + player.position}">Club - Position</p>
+				<div class="meta-line">
+					<span th:text="${player.country}">Country</span>
+					<span th:text="${player.voteCount + ' votes'}">0 votes</span>
+				</div>
+			</div>
+			<div class="card-actions">
+				<a class="button button-ghost" th:href="@{/players/{id}(id=${player.id})}">Open</a>
+				<form th:if="${loggedIn}" th:action="@{/players/{id}/vote(id=${player.id})}" method="post" class="inline-form">
+					<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+					<input type="hidden" name="returnUrl" th:value="@{/players(keyword=${keyword})}">
+					<button class="button button-primary" type="submit" th:text="${votedPlayerIds.contains(player.id) ? 'Voted' : 'Vote'}">Vote</button>
+				</form>
+			</div>
+		</article>
+	</section>
+</main>
+</body>
+</html>
