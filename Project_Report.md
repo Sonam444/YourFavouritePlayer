@@ -11,7 +11,7 @@
 | 2 | TAMANG RUPESH |
 | 3 | SHRESTHA CHIRANJIBI |
 
-**Live deployment:** https://yourfavouriteplayer-production-6701.up.railway.app/
+**Live deployment:** https://yourfavouriteplayer-production-6701.up.railway.app/players
 
 ---
 
@@ -123,19 +123,17 @@ AppUser 1 ──< PlayerCard 1 ──< Vote >── 1 AppUser
 
 ## 5. Screenshots
 
-> _Screenshots will be added here. Replace each placeholder below with your image._
-
 **5.1 Home / Ranking page (winner shown first)**
 
-`[ Screenshot placeholder — paste image here ]`
+![Home / Ranking page](screenshots/home-ranking.png)
 
-*Figure 1: Ranking page listing player cards by votes, with the winner highlighted.*
+*Figure 1: Ranking page listing player cards by votes. Cristiano Ronaldo is shown first and marked as the **Winner**, followed by Neymar Jr (#2), Son Heung Min (#3), and Lionel Messi (#4). A keyword search box appears at the top.*
 
 **5.2 Player detail page (votes & comments)**
 
-`[ Screenshot placeholder — paste image here ]`
+![Player detail page](screenshots/player-detail.png)
 
-*Figure 2: Player card detail page with vote button and comments.*
+*Figure 2: Cristiano Ronaldo's detail page showing club, position, and country, the vote count with the Remove Vote / Edit / Delete actions for the card owner, and the comments section.*
 
 **5.3 Create / Edit player card form**
 
