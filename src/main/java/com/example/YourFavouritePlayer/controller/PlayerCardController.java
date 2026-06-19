@@ -80,7 +80,7 @@ public class PlayerCardController {
 
 	@GetMapping("/players/{id}")
 	public String detail(@PathVariable Long id, Model model, Authentication authentication) {
-		PlayerCard playerCard = playerCardService.getPlayer(id);
+		PlayerCard playerCard = playerCardService.getPlayerWithDetails(id);
 		model.addAttribute("player", playerCard);
 		model.addAttribute("comments", commentService.findByPlayer(playerCard));
 		model.addAttribute("commentForm", new CommentForm());
